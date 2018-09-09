@@ -47,11 +47,58 @@ make install
 `redis-server /etc/redis.conf` start the redis server with a conf file
 `tail -f /var/log/redis/redis-server.log` tail the log file.
 
-### REPL
+### REDIS-CLI
 
-`redis-cli`
-`ping`
-`set mykey somevalue`
-`get mykey`
-`ECHO 'Hello World'`
-`QUIT`
+```sh
+redis-cli # ENTER CLI
+PING # CHECK CONNECTION
+ECHO 'Hello World'
+
+# SET KEYS AND CHECK EXISTENCE
+SET mykey somevalue
+EXISTS mykey
+GET mykey
+
+# INCREMENTING/DECRIMENING
+SET foo 100
+INCR foo
+DECR foo
+
+# OBJECTS
+SET server:name someserver
+GET server:name
+SET server:port 8000
+GET SERVER:port
+
+# TTL/EXPIRE
+SET greeting "Hello World"
+GET greeting
+EXPIRE greeting 50
+TTL greeting # 50, 49, 48...
+SETEX greeting 30 "Hello World" # Set value for key and expiration simultaneously
+PERSIST greeting # Remove the expiry for a key
+
+# SET MULTIPLE
+MSET key1 "HELLO" key2 "WORLD"
+GET key2 # "WORLD"
+APPEND key1 " WORLD"
+GET key1 #"HELLO WORLD"
+
+# RENAME
+RENAME key1 greeting
+GET key1 #(nil)
+GET greeting # "HELLO WORLD"
+
+# LISTS
+LPUSH people "Brad"
+LPUSH people "Jen"
+LPUSH people "Tom"
+LRANGE people 0 -1 # Return entire list
+LPOP people # "Brad"
+RPOP people # "Tom"
+LINSERT people AFTER Jen Brad
+
+
+FLUSHALL # EMPTY THE CACHE
+QUIT
+```
