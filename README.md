@@ -29,6 +29,8 @@ tar xvzf redis-stable.tar.gz
 cd redis-stable
 make
 make install
+vi /etc/redis.conf
+  append-only
 ```
 
 ## Commands
@@ -98,7 +100,38 @@ LPOP people # "Brad"
 RPOP people # "Tom"
 LINSERT people AFTER Jen Brad
 
+# SETS
+SADD cars "Ford"
+SADD cars "Honda"
+SADD cars "BMW"
+SISMEMBER cars "Ford" # 1
+SYSMEMBER cars "Audi" # 0
+SMOVE cars cars mycars "Ford"
+SREM cars "BMW"
+SMEMBERS cars
 
+# SORTED SETS
+ZADD users 1981 "Jordan Smith" # Add member Jordan with score of 1981
+ZADD users 1971 "John Doe"
+ZADD users 1971 "Jack Doe"
+ZADD users 1975 "Kate Rogers"
+ZRANK users "John Doe"
+ZRANGE users 0 -1 # list all
+ZINCRBY users 10 "John Doe" # increment score by 10
+
+# HASHES
+HSET user:brad name "Brad Smith"
+HSET user:brad email "brad@mail.com"
+HGET user:brad email
+HGETALL user:brad
+HMSET user:john name "John Doe" email "jdoe@mail.com" age "25"
+HGETALL user:john # get all key value pairs
+HINCRBY user:john age 1
+HDEL user:john age # delete a key value pair
+HVALS user:john # get all values
+
+SAVE # Save snapshot to disk
+SAVE 60 1000 # Save every 60 seconds if 1000 records have changed > dump.rdb
 FLUSHALL # EMPTY THE CACHE
 QUIT
 ```
